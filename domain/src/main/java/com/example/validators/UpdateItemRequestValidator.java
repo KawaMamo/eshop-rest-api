@@ -1,13 +1,10 @@
 package com.example.validators;
 
 
-import com.example.contract.requests.CreateItemRequest;
 import com.example.contract.requests.Request;
 import com.example.contract.requests.UpdateItemRequest;
-
 import static com.example.contract.constants.DomainConstants.*;
 import static com.example.exceptions.DomainValidationException.ValidationErrorDetails.of;
-
 import java.util.Objects;
 
 
@@ -15,9 +12,9 @@ public class UpdateItemRequestValidator extends CreateItemRequestValidator {
 
     @Override
     protected void validateSteps(Request request) {
-        CreateItemRequest createItemRequest = (CreateItemRequest) request;
-        super.validateSteps(createItemRequest);
-        validateId((UpdateItemRequest) createItemRequest);
+        UpdateItemRequest updateItemRequest = (UpdateItemRequest) request;
+        super.validateSteps(updateItemRequest);
+        validateId(updateItemRequest);
     }
 
     private void validateId(UpdateItemRequest request){

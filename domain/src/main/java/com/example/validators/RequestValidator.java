@@ -1,6 +1,5 @@
 package com.example.validators;
 
-import com.example.contract.requests.CreateItemRequest;
 import com.example.contract.requests.Request;
 import com.example.exceptions.DomainValidationException;
 
