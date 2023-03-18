@@ -14,14 +14,16 @@ public class InMemoryItemsRepository implements ItemsRepository {
 
     @Override
     public Item save(Item item) {
-        Long nextVal = itemsTable.keySet()
-                .stream()
-                .max(Long::compareTo)
-                .orElse(0L) + 1;
 
-        item.setId(nextVal);
+        if(item.getId() == null){
+            Long nextVal = itemsTable.keySet()
+                    .stream()
+                    .max(Long::compareTo)
+                    .orElse(0L) + 1;
+            item.setId(nextVal);
+        }
 
-        return itemsTable.put(nextVal, item);
+        return itemsTable.put(item.getId(), item);
     }
 
     public List<Item> listAll() {

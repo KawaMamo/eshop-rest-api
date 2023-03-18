@@ -11,8 +11,6 @@ import java.util.Set;
 import static com.example.contract.constants.DomainConstants.*;
 import static com.example.exceptions.DomainValidationException.ValidationErrorDetails.of;
 
-
-
 /*
  *
  *
@@ -31,31 +29,37 @@ import static com.example.exceptions.DomainValidationException.ValidationErrorDe
  * throwing exception...
  * */
 
-
 public class CreateItemRequestValidator {
 
+    final Set<ValidationErrorDetails> validationErrors = new HashSet<>();
     public void validate(CreateItemRequest createItemRequest) {
-        final Set<ValidationErrorDetails> validationErrors = new HashSet<>();
-
-        if (Objects.isNull(createItemRequest.getCategory())) {
-            validationErrors.add(of(CATEGORY_FIELD_NAME, VALUE_REQUIRED_ERROR_MESSAGE));
-        }
-
-        if (!hasValidRatingValueRange(createItemRequest)) {
-            validationErrors.add(of(RATING_FIELD_NAME, INVALID_RATING_VALUE_RANGE));
-        }
-
+        validateSteps(createItemRequest);
         throwIfHaveErrors(validationErrors);
     }
 
-    private static boolean hasValidRatingValueRange(CreateItemRequest createItemRequest) {
-        return Objects.isNull(createItemRequest.getRating()) || (createItemRequest.getRating() > 0 && createItemRequest.getRating() <= 5);
+    protected void hasValidRatingValueRange(CreateItemRequest createItemRequest) {
+
+        if(!Objects.isNull(createItemRequest.getRating()) && (createItemRequest.getRating() <= 0 || createItemRequest.getRating() > 5)){
+            validationErrors.add(of(RATING_FIELD_NAME, INVALID_RATING_VALUE_RANGE));
+        }
     }
 
-    private void throwIfHaveErrors(Set<ValidationErrorDetails> validationErrors) {
+    protected void hasValidCategory(CreateItemRequest createItemRequest){
+        if (Objects.isNull(createItemRequest.getCategory())) {
+            validationErrors.add(of(CATEGORY_FIELD_NAME, VALUE_REQUIRED_ERROR_MESSAGE));
+        }
+    }
+
+    protected void throwIfHaveErrors(Set<ValidationErrorDetails> validationErrors) {
         if (!validationErrors.isEmpty()) {
             throw new DomainValidationException(validationErrors);
         }
     }
+
+    protected void validateSteps(CreateItemRequest createItemRequest){
+        hasValidCategory(createItemRequest);
+        hasValidRatingValueRange(createItemRequest);
+    }
+
 
 }

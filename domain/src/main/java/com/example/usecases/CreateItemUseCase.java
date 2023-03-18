@@ -2,7 +2,7 @@ package com.example.usecases;
 
 import com.example.contract.repositories.ItemsRepository;
 import com.example.contract.requests.CreateItemRequest;
-import com.example.contract.responses.CreateItemResponse;
+import com.example.contract.responses.ItemResponse;
 import com.example.mappers.ItemDomainMapper;
 import com.example.modals.Item;
 import com.example.validators.CreateItemRequestValidator;
@@ -35,7 +35,7 @@ public class CreateItemUseCase {
         this.itemsRepository = itemsRepository;
     }
 
-    public CreateItemResponse execute(CreateItemRequest createItemRequest) {
+    public ItemResponse execute(CreateItemRequest createItemRequest) {
         validateRequest(createItemRequest);
 
         final Item item = mapToDomain(createItemRequest);
@@ -51,7 +51,7 @@ public class CreateItemUseCase {
         return itemsRepository.save(item);
     }
 
-    private CreateItemResponse mapToResponse(Item item) {
+    private ItemResponse mapToResponse(Item item) {
         return itemDomainMapper.toCreateResponse(item);
     }
 
