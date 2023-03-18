@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.contract.repositories.ItemsRepository;
 import com.example.contract.requests.CreateItemRequest;
+import com.example.contract.requests.DeleteRequest;
 import com.example.contract.requests.UpdateItemRequest;
 import com.example.exceptions.DomainValidationException;
 import com.example.mappers.ItemDomainMapperImpl;
@@ -10,8 +11,10 @@ import com.example.modals.ItemUnit;
 import com.example.repositories.InMemoryItemsRepository;
 import com.example.simulators.DependencyInjector;
 import com.example.usecases.CreateItemUseCase;
+import com.example.usecases.DeleteItemUseCase;
 import com.example.usecases.UpdateItemUseCase;
 import com.example.validators.CreateItemRequestValidator;
+import com.example.validators.DeleteRequestValidator;
 import com.example.validators.UpdateItemRequestValidator;
 
 public class Main {
@@ -31,6 +34,7 @@ public class Main {
 
         //api exception handler...
         try {
+            createItemUseCase.execute(createItemRequest);
             createItemUseCase.execute(createItemRequest);
 
             System.out.println(bean.listAll());
@@ -56,6 +60,14 @@ public class Main {
             System.out.println(e.getValidationErrors());
         }
 
+
+        System.out.println(bean.listAll());
+
+        DeleteRequest deleteRequest = new DeleteRequest();
+        deleteRequest.setId(1L);
+        DeleteRequestValidator deleteRequestValidator = new DeleteRequestValidator();
+        DeleteItemUseCase deleteItemUseCase = new DeleteItemUseCase(deleteRequestValidator, bean, new ItemDomainMapperImpl());
+        deleteItemUseCase.execute(deleteRequest);
 
         System.out.println(bean.listAll());
     }

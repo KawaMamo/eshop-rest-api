@@ -2,6 +2,7 @@ package com.example.validators;
 
 
 import com.example.contract.requests.CreateItemRequest;
+import com.example.contract.requests.Request;
 import com.example.contract.requests.UpdateItemRequest;
 
 import static com.example.contract.constants.DomainConstants.*;
@@ -13,12 +14,13 @@ import java.util.Objects;
 public class UpdateItemRequestValidator extends CreateItemRequestValidator {
 
     @Override
-    protected void validateSteps(CreateItemRequest createItemRequest) {
+    protected void validateSteps(Request request) {
+        CreateItemRequest createItemRequest = (CreateItemRequest) request;
         super.validateSteps(createItemRequest);
-        hasValidId((UpdateItemRequest) createItemRequest);
+        validateId((UpdateItemRequest) createItemRequest);
     }
 
-    private void hasValidId(UpdateItemRequest request){
+    private void validateId(UpdateItemRequest request){
         if(Objects.isNull(request.getId()) || request.getId() <= 0)
             validationErrors.add(of(ID_FIELD_NAME, MISSING_ID_MESSAGE));
     }

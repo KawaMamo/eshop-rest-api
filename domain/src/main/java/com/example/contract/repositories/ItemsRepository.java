@@ -5,4 +5,6 @@ import com.example.modals.Item;
 public interface ItemsRepository {
     Item save(Item item);
 
+    Item delete(Long id);
+
 }

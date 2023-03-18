@@ -26,6 +26,11 @@ public class InMemoryItemsRepository implements ItemsRepository {
         return itemsTable.put(item.getId(), item);
     }
 
+    @Override
+    public Item delete(Long id) {
+        return itemsTable.remove(id);
+    }
+
     public List<Item> listAll() {
         return new ArrayList<>(itemsTable.values());
     }
